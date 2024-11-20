@@ -3,6 +3,12 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import profile from './profile';
 import setting from './setting';
+import Report from './Report';
+import Add from './Add';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import Icon from 'react-native-vector-icons/MaterialIcons'; // Import an icon set
+ 
 const Home = () => {
   return (
     <View style={styles.container}>
@@ -34,9 +40,40 @@ const Tab = createBottomTabNavigator();
 function MyTabs() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="profile" component={profile} />
-    <Tab.Screen name="setting" component={setting} />
+      <Tab.Screen name="Home" component={Home} 
+      options ={{
+        tabBarIcon: ({color}) => (
+          <Icon name="home" color={color} size={30} />
+        )
+      }}
+      />
+      <Tab.Screen name="Report" component={Report} options ={{
+        tabBarIcon: ({color}) => (
+          <Icon name="analytics" color={color} size={30} />
+        )
+      }}
+      />
+       <Tab.Screen name="Add" component={Add} options ={{
+        tabBarIcon: ({color}) => (
+          <Icon name="Add" color={color} size={30} />
+        )
+      }}
+      />
+  
+      <Tab.Screen name="profile" component={profile} options ={{
+        tabBarIcon: ({color}) => (
+          <Icon name="person" color={color} size={30} />
+        )
+      }}
+      />
+    <Tab.Screen name="setting" component={setting}
+    options ={{
+      tabBarIcon: ({color}) => (
+        <Icon name="settings" color={color} size={30} />
+      )
+    }} />
+
+
     </Tab.Navigator>
   );
 }
