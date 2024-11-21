@@ -1,8 +1,10 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
+const Setting = () => {
+  const navigation = useNavigation();
 
-const setting = () => {
   const options = [
     'Notification',
     'Dark Mode',
@@ -14,36 +16,57 @@ const setting = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <View style={styles.profilecontainer}>
-        <Text style={styles.profileName}>Amrit Sapkota</Text>
-        {/* Placeholder for profile image */}
+      <View style={styles.profileContainer}>
         <View style={styles.profileImagePlaceholder} />
-        <View style={styles.profileeditoption}>
-          <TouchableOpacity style={styles.editprofilebutton}>
+        <View style={styles.profileEditOption}>
+          <Text style={styles.profileName}>Amrit Sapkota</Text>
+          <Text style={styles.emailText}>test@test.com</Text>
+          <TouchableOpacity
+            style={styles.editProfileButton}
+            onPress={() => navigation.navigate('Editprofile')}>
             <Text style={styles.editProfileText}>Edit Profile</Text>
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.settingoptions}>
+
+      <View style={styles.settingOptions}>
         {options.map((option, index) => (
-          <TouchableOpacity key={index} style={styles.optionButton} activeOpacity={0.7}>
-            <Text style={styles.settingoptiontext}>{option}</Text>
+          <TouchableOpacity
+            key={index}
+            style={styles.optionButton}
+            activeOpacity={0.7}
+            accessible={true}
+            accessibilityLabel={option}
+          >
+            <Text style={styles.settingOptionText}>{option}</Text>
           </TouchableOpacity>
         ))}
       </View>
-      <View style={styles.otheroptions}>
-        <TouchableOpacity style={styles.logout} activeOpacity={0.7}>
-          <Text style={styles.settingoptionstext}>Logout</Text>
+
+      <View style={styles.otherOptions}>
+        <TouchableOpacity
+          style={styles.logout}
+          activeOpacity={0.7}
+          accessible={true}
+          accessibilityLabel="Logout"
+        >
+          <Text style={styles.settingOptionsText}>Logout</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.deleteaccount} activeOpacity={0.7}>
-          <Text style={styles.settingoptionstext}>Delete Account</Text>
+        <TouchableOpacity
+          style={styles.deleteAccount}
+          activeOpacity={0.7}
+          accessible={true}
+          accessibilityLabel="Delete Account"
+        >
+          <Text style={styles.settingOptionsText}>Delete Account</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
   );
 };
 
-export default setting;
+export default Setting;
+
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
@@ -51,7 +74,12 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#f9f9f9',
   },
-  profilecontainer: {
+  emailText: {
+    fontSize: 18,
+    color: '#666',
+    marginBottom: 10,
+  },
+  profileContainer: {
     alignItems: 'center',
     marginBottom: 30,
   },
@@ -59,7 +87,7 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: 'bold',
     color: '#333',
-    marginBottom: 10,
+    marginBottom: 5,
   },
   profileImagePlaceholder: {
     width: 100,
@@ -73,12 +101,13 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 5,
   },
-  profileeditoption: {
-    marginTop: 10,
+  profileEditOption: {
+    alignItems: 'center',
   },
-  editprofilebutton: {
-    backgroundColor: '#4CAF50',
-    paddingVertical: 12,
+  editProfileButton: {
+    backgroundColor: 'green',
+    paddingVertical: 15,
+    marginTop: 10,
     paddingHorizontal: 20,
     borderRadius: 8,
     shadowColor: '#000',
@@ -92,7 +121,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  settingoptions: {
+  settingOptions: {
     width: '100%',
     marginBottom: 20,
   },
@@ -109,19 +138,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#e0e0e0',
   },
-  settingoptiontext: {
+  settingOptionText: {
     fontSize: 18,
     fontWeight: '500',
     color: '#444',
   },
-  otheroptions: {
-    width: '50%',
+  otherOptions: {
+    width: '100%',
     marginTop: 20,
   },
   logout: {
     paddingVertical: 15,
     borderRadius: 10,
-    backgroundColor: 'blue',
+    backgroundColor: '#007BFF',
     marginBottom: 10,
     alignItems: 'center',
     shadowColor: '#000',
@@ -130,7 +159,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 4,
   },
-  deleteaccount: {
+  deleteAccount: {
     paddingVertical: 15,
     borderRadius: 10,
     backgroundColor: '#ff4d4d',
@@ -141,7 +170,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 4,
   },
-  settingoptionstext: {
+  settingOptionsText: {
     fontSize: 18,
     fontWeight: '600',
     color: 'white',
