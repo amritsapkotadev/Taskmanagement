@@ -61,6 +61,7 @@ function MyTabs() {
       />
   
       <Tab.Screen name="profile" component={profile} options ={{
+        headerShown: false,
         tabBarIcon: ({color}) => (
           <Icon name="person" color={color} size={30} />
         )
@@ -68,6 +69,7 @@ function MyTabs() {
       />
     <Tab.Screen name="setting" component={setting}
     options ={{
+      headerShown: false,
       tabBarIcon: ({color}) => (
         <Icon name="settings" color={color} size={30} />
       )
