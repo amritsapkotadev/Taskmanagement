@@ -7,7 +7,7 @@ import Welcome from "./screens/Welcome";
 import option from "./screens/option";
 import Signup from "./screens/Signup";
 import Home from "./screens/Home";
-import Editprofile from "./screens/editprofile";
+import Editprofile from "./screens/Editprofile";
 import TermsAndConditions from "./screens/termsandconditions";
 const Stack = createStackNavigator();
 
@@ -22,7 +22,7 @@ export default function Modal() {
         <Stack.Screen name="Signup" component={Signup} />
         <Stack.Screen name="Home" component={Home} options={{headerShown:false}} />
         <Stack.Screen name="TermsAndConditions" component={TermsAndConditions} />
-        <Stack.Screen name="Editprofile" component={Editprofile} options={{headerShown:false}} />
+        <Stack.Screen name="Editprofile" component={Editprofile}  />
       </Stack.Navigator>
     </NavigationContainer>
   );

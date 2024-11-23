@@ -42,6 +42,7 @@ function MyTabs() {
     <Tab.Navigator>
       <Tab.Screen name="Home" component={Home} 
       options ={{
+        headerShown: false,
         tabBarIcon: ({color}) => (
           <Icon name="home" color={color} size={30} />
         )
@@ -54,6 +55,7 @@ function MyTabs() {
       }}
       />
        <Tab.Screen name="Add" component={Add} options ={{
+        headerShown: false,
         tabBarIcon: ({color}) => (
           <Icon name="Add" color={color} size={30} />
         )
@@ -68,7 +70,7 @@ function MyTabs() {
       }}
       />
     <Tab.Screen name="setting" component={setting}
-    options ={{
+    options ={{ 
       headerShown: false,
       tabBarIcon: ({color}) => (
         <Icon name="settings" color={color} size={30} />
