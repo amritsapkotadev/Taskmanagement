@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import profile from './profile';
+import Notes from './Notes';
 import setting from './setting';
 import Report from './Report';
 import Add from './Add';
@@ -57,15 +57,15 @@ function MyTabs() {
        <Tab.Screen name="Add" component={Add} options ={{
         headerShown: false,
         tabBarIcon: ({color}) => (
-          <Icon name="Add" color={color} size={30} />
+          <Icon name="add" color={color} size={40} />
         )
       }}
       />
   
-      <Tab.Screen name="profile" component={profile} options ={{
+      <Tab.Screen name="Notes" component={Notes} options ={{
         headerShown: false,
         tabBarIcon: ({color}) => (
-          <Icon name="person" color={color} size={30} />
+          <Icon name="note" color={color} size={30} />
         )
       }}
       />
