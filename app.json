@@ -1,3 +1,4 @@
+
 {
   "expo": {
     "name": "Task",
@@ -21,7 +22,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.amritsapkota.Task"
+      "package": "com.amritsapkota.Task",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",

@@ -16,6 +16,8 @@
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
     "@react-native-community/datetimepicker": "^8.2.0",
+    "@react-native-firebase/app": "^21.6.0",
+    "@react-native-firebase/auth": "^21.6.0",
     "@react-navigation/bottom-tabs": "^7.0.0",
     "@react-navigation/drawer": "^7.0.0",
     "@react-navigation/native": "^7.0.0",
@@ -32,6 +34,7 @@
     "expo-system-ui": "~4.0.3",
     "expo-web-browser": "~14.0.1",
     "express": "^4.21.1",
+    "firebase": "^11.0.2",
     "firebase-admin": "^13.0.1",
     "http-errors": "^2.0.0",
     "mongoose": "^8.8.2",
