@@ -1,88 +1,140 @@
-import React from "react";
-import { View, Text, TextInput,Image, Button, StyleSheet, TouchableOpacity } from "react-native";
-const Login = ({ navigation }: { navigation: any }) => {
+import React from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+
+// Validation schema
+const validationSchema = Yup.object().shape({
+  email: Yup.string()
+    .required('Email is required')
+    .email('Enter a valid email')
+    .label('Email'),
+  password: Yup.string()
+    .required('Password is required')
+    .min(8, 'Password must be at least 8 characters')
+    .label('Password'),
+});
+
+const Login = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome Back!</Text>
-      <Text style={styles.subtitle}>Log in to your account</Text>
-      <TextInput
-        placeholder="Email"
-        style={styles.input}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      <TextInput
-        placeholder="Password"
-        style={styles.input}
-        secureTextEntry
-      />
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Home")}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
-      <Text style={styles.footerText}>
-        Don’t have an account?{" "}
-        <Text
-          style={styles.link}
-          onPress={() => navigation.navigate("Signup")}
-        >
-          Sign up
-        </Text>
-      </Text>
+      <Text style={styles.title}>Login</Text>
+      <Formik
+        initialValues={{ email: '', password: '' }}
+        onSubmit={(values) => console.log(values)}
+        validationSchema={validationSchema}
+      >
+        {({ handleSubmit, handleChange, handleBlur, values, errors, touched }) => (
+          <>
+            <View style={styles.inputContainer}>
+              <TextInput
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="email-address"
+                placeholder="Email"
+                placeholderTextColor="#aaa"
+                onChangeText={handleChange('email')}
+                onBlur={handleBlur('email')}
+                value={values.email}
+                style={styles.textInput}
+                textContentType="emailAddress"
+              />
+            </View>
+            {/* Error message for email */}
+            {errors.email && touched.email && (
+              <Text style={styles.errorText}>{errors.email}</Text>
+            )}
+
+            <View style={styles.inputContainer}>
+              <TextInput
+                autoCapitalize="none"
+                placeholder="Password"
+                secureTextEntry
+                placeholderTextColor="#aaa"
+                onChangeText={handleChange('password')}
+                onBlur={handleBlur('password')}
+                value={values.password}
+                style={styles.textInput}
+                textContentType="password"
+              />
+            </View>
+            {/* Error message for password */}
+            {errors.password && touched.password && (
+              <Text style={styles.errorText}>{errors.password}</Text>
+            )}
+
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={handleSubmit}
+            >
+              <Text style={styles.buttonText}>Login</Text>
+            </TouchableOpacity>
+          </>
+        )}
+      </Formik>
     </View>
   );
 };
 
+export default Login;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 20,
-    backgroundColor: "black",
+    backgroundColor: '#f8f9fa',
   },
   title: {
     fontSize: 28,
-    fontWeight: "bold",
-    color: "white",
-    marginBottom: 10,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 20,
   },
-  subtitle: {
-    fontSize: 16,
-    color: "white",
-    marginBottom: 30,
-  },
-  input: {
-    width: "100%",
-    padding: 15,
+  inputContainer: {
+    width: '100%',
     marginBottom: 15,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    backgroundColor: "#fff",
-    fontSize: 16,
   },
-  button: {
-    width: "100%",
+  textInput: {
+    width: '100%',
     padding: 15,
-    backgroundColor: "#007BFF",
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: '#ddd',
     borderRadius: 8,
-    alignItems: "center",
-    marginTop: 10,
+    backgroundColor: '#fff',
+    color: '#333',
+  },
+  textInputFocused: {
+    borderColor: '#007bff',
+    shadowColor: '#007bff',
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginTop: 5,
+    alignSelf: 'flex-start',
+  },
+  buttonContainer: {
+    width: '100%',
+    backgroundColor: 'purple',
+    borderRadius: 8,
+    padding: 15,
+    alignItems: 'center',
+    marginTop: 20,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 3,
   },
   buttonText: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 16,
-    fontWeight: "600",
-  },
-  footerText: {
-    marginTop: 20,
-    fontSize: 14,
-    color: "#ccc",
-  },
-  link: {
-    color: "#007BFF",
-    fontWeight: "600",
+    fontWeight: 'bold',
   },
 });
 
-export default Login;

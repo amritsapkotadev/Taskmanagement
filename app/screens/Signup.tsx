@@ -1,101 +1,130 @@
-import React, { useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  CheckBox,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
-const Signup: React.FC = () => {
-  const navigation = useNavigation<any>();
-  const [passwordVisible, setPasswordVisible] = useState(false);
-  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
+// Validation schema
+const validationSchema = Yup.object().shape({
+  email: Yup.string()
+    .required('Email is required')
+    .email('Enter a valid email')
+    .label('Email'),
+  password: Yup.string()
+    .required('Password is required')
+    .min(8, 'Password must be at least 8 characters')
+    .label('Password'),
+  confirmPassword: Yup.string()
+    .required('Confirm password is required')
+    .oneOf([Yup.ref('password'), null], 'Passwords must match'),
+  phonenumber: Yup.string()
+    .optional()
+    .matches(/^[0-9]+$/, 'Phone number must be only digits')
+    .length(10, 'Phone number must be exactly 10 digits')
+    .label('Phone Number'),
+});
 
+const Signup = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Create Your Account</Text>
-
-      <TextInput placeholder="Email" style={styles.input} keyboardType="email-address" />
-      <TextInput placeholder="Phone Number" style={styles.input} keyboardType="phone-pad" />
-
-      {/* Password Input with Toggle */}
-      <View style={styles.passwordContainer}>
-        <TextInput
-          placeholder="Password"
-          style={styles.passwordInput}
-          secureTextEntry={!passwordVisible}
-        />
-        <TouchableOpacity
-          onPress={() => setPasswordVisible(!passwordVisible)}
-          style={styles.toggleButton}
-        >
-          <Text style={styles.toggleText}>
-            {passwordVisible ? 'Hide' : 'Show'}
-          </Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Confirm Password Input with Toggle */}
-      <View style={styles.passwordContainer}>
-        <TextInput
-          placeholder="Confirm Password"
-          style={styles.passwordInput}
-          secureTextEntry={!confirmPasswordVisible}
-        />
-        <TouchableOpacity
-          onPress={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
-          style={styles.toggleButton}
-        >
-          <Text style={styles.toggleText}>
-            {confirmPasswordVisible ? 'Hide' : 'Show'}
-          </Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Terms and Conditions */}
-      <View style={styles.checkboxContainer}>
-        <CheckBox value={isChecked} onValueChange={setIsChecked} />
-        <Text style={styles.checkboxLabel}>
-          I agree to the{' '}
-          <Text style={styles.link} onPress={() => navigation.navigate('TermsAndConditions')}>
-            Terms and Conditions
-          </Text>
-        </Text>
-      </View>
-
-      {/* Signup Button */}
-      <TouchableOpacity
-        style={[styles.signupButton, !isChecked && styles.disabledButton]}
-        onPress={() => {
-          if (isChecked) navigation.navigate('Home');
-        }}
-        disabled={!isChecked}
+      <Text style={styles.title}>Signup</Text>
+      <Formik
+        initialValues={{ email: '', password: '', confirmPassword: '', phonenumber: '' }}
+        onSubmit={(values) => console.log('Submitted Values:', values)}
+        validationSchema={validationSchema}
       >
-        <Text style={styles.signupButtonText}>Sign Up</Text>
-      </TouchableOpacity>
+        {({ handleSubmit, handleChange, handleBlur, values, errors, touched }) => (
+          <>
+            {/* Email Input */}
+            <View style={styles.inputContainer}>
+              <TextInput
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="email-address"
+                placeholder="Email"
+                placeholderTextColor="#aaa"
+                onChangeText={handleChange('email')}
+                onBlur={handleBlur('email')}
+                value={values.email}
+                style={[
+                  styles.textInput,
+                  !values.email && styles.placeholderText
+                ]}                textContentType="emailAddress"
+              />
+              {errors.email && touched.email && (
+                <Text style={styles.errorText}>{errors.email}</Text>
+              )}
+            </View>
 
-      {/* OR Separator */}
-      <Text style={styles.orText}>OR</Text>
+            {/* Phone Number Input */}
+            <View style={styles.inputContainer}>
+              <TextInput
+                autoCapitalize="none"
+                keyboardType="phone-pad"
+                placeholder="Phone Number (Optional)"
+                placeholderTextColor="#aaa"
+                onChangeText={handleChange('phonenumber')}
+                onBlur={handleBlur('phonenumber')}
+                value={values.phonenumber}
+                style={[
+                  styles.textInput,
+                  !values.phonenumber && styles.placeholderText
+                ]}
+                textContentType="telephoneNumber"
+              />
+              {errors.phonenumber && touched.phonenumber && (
+                <Text style={styles.errorText}>{errors.phonenumber}</Text>
+              )}
+            </View>
 
-      {/* Google Sign-Up */}
-      <TouchableOpacity style={styles.googleButton}>
-        <Text style={styles.buttonText}>Sign Up with Google</Text>
-      </TouchableOpacity>
+            {/* Password Input */}
+            <View style={styles.inputContainer}>
+              <TextInput
+                autoCapitalize="none"
+                placeholder="Password"
+                secureTextEntry
+                placeholderTextColor="#aaa"
+                onChangeText={handleChange('password')}
+                onBlur={handleBlur('password')}
+                value={values.password}
+                style={[
+                  styles.textInput,
+                  !values.password && styles.placeholderText
+                ]}                textContentType="password"
+              />
+              {errors.password && touched.password && (
+                <Text style={styles.errorText}>{errors.password}</Text>
+              )}
+            </View>
 
-      {/* Facebook Sign-Up */}
-      <TouchableOpacity style={styles.facebookButton}>
-        <Text style={styles.buttonText}>Sign Up with Facebook</Text>
-      </TouchableOpacity>
+            {/* Confirm Password Input */}
+            <View style={styles.inputContainer}>
+              <TextInput
+                autoCapitalize="none"
+                placeholder="Confirm Password"
+                secureTextEntry
+                placeholderTextColor="#aaa"
+                onChangeText={handleChange('confirmPassword')}
+                onBlur={handleBlur('confirmPassword')}
+                value={values.confirmPassword}
+                style={[
+                  styles.textInput,
+                  !values.confirmPassword && styles.placeholderText
+                ]}              />
+              {errors.confirmPassword && touched.confirmPassword && (
+                <Text style={styles.errorText}>{errors.confirmPassword}</Text>
+              )}
+            </View>
 
-      {/* Already have an account */}
-      <Text style={styles.footerText}>
-        Already have an account?{' '}
-        <Text style={styles.link}>Log In</Text>
-      </Text>
+            {/* Signup Button */}
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={handleSubmit}
+            >
+              <Text style={styles.buttonText}>Signup</Text>
+            </TouchableOpacity>
+          </>
+        )}
+      </Formik>
     </View>
   );
 };
@@ -107,110 +136,55 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f0f4f8',
     padding: 20,
+    backgroundColor: '#f8f9fa',
   },
+  placeholderText: {
+    color: '#w3w3w3',
+    fontSize: 20,
+  },
+  
   title: {
     fontSize: 28,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 20,
   },
-  input: {
-    width: '90%',
-    paddingHorizontal: 15,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    backgroundColor: '#fff',
-    fontSize: 16,
-    height: 50,
+  inputContainer: {
+    width: '100%',
     marginBottom: 15,
   },
-  passwordContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '90%',
+  textInput: {
+    width: '100%',
+    padding: 15,
+    fontSize: 16,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: '#ddd',
     borderRadius: 8,
     backgroundColor: '#fff',
-    marginBottom: 15,
-    paddingHorizontal: 15,
+    color: '#333',
   },
-  passwordInput: {
-    flex: 1,
-    height: 50,
-    fontSize: 16,
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginTop: 5,
+    alignSelf: 'flex-start',
   },
-  toggleButton: {
-    justifyContent: 'center',
+  buttonContainer: {
+    width: '100%',
+    backgroundColor: 'purple',
+    borderRadius: 8,
+    padding: 15,
     alignItems: 'center',
-  },
-  toggleText: {
-    color: '#007BFF',
-    fontWeight: '600',
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '90%',
-    marginVertical: 15,
-  },
-  checkboxLabel: {
-    marginLeft: 10,
-    fontSize: 14,
-    color: '#555',
-  },
-  link: {
-    color: '#007BFF',
-    fontWeight: '600',
-  },
-  signupButton: {
     marginTop: 20,
-    width: '90%',
-    padding: 15,
-    backgroundColor: '#007BFF',
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  disabledButton: {
-    backgroundColor: '#aaa',
-  },
-  signupButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  orText: {
-    marginVertical: 10,
-    fontSize: 16,
-    color: '#555',
-  },
-  googleButton: {
-    marginTop: 10,
-    width: '90%',
-    padding: 15,
-    backgroundColor: '#DB4437',
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  facebookButton: {
-    marginTop: 10,
-    width: '90%',
-    padding: 15,
-    backgroundColor: '#3b5998',
-    borderRadius: 8,
-    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 3,
   },
   buttonText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: '600',
-  },
-  footerText: {
-    marginTop: 20,
-    fontSize: 14,
-    color: '#555',
+    fontWeight: 'bold',
   },
 });
