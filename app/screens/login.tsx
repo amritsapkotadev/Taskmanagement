@@ -65,7 +65,11 @@ const Login = () => {
 
             <TouchableOpacity
               style={styles.buttonContainer}
-              onPress={handleSubmit}
+              onPress={()=>{
+                handleSubmit();
+                console.log("Login button pressed");
+                
+              }}
             >
               <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
