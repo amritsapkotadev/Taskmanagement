@@ -11,7 +11,7 @@ const validationSchema = Yup.object().shape({
     .label('Email'),
   password: Yup.string()
     .required('Password is required')
-    .min(8, 'Password must be at least 8 characters')
+    .min(8, 'Password must be at least 9 characters')
     .label('Password'),
 });
 
@@ -68,7 +68,7 @@ const Login = () => {
               onPress={()=>{
                 handleSubmit();
                 console.log("Login button pressed");
-                
+
               }}
             >
               <Text style={styles.buttonText}>Login</Text>
