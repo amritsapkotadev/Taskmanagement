@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
@@ -15,13 +15,27 @@ const validationSchema = Yup.object().shape({
     .label('Password'),
   confirmPassword: Yup.string()
     .required('Confirm password is required')
-    .oneOf([Yup.ref('password'), null], 'Passwords must match'),
+    .oneOf([Yup.ref('password'), ''], 'Passwords must match'),
   phonenumber: Yup.string()
     .optional()
     .matches(/^[0-9]+$/, 'Phone number must be only digits')
     .length(10, 'Phone number must be exactly 10 digits')
     .label('Phone Number'),
 });
+const handleSignup = async () => {
+  try {
+    const response = await axios.post('/signup', { email, password });
+    if (response.status === 201) {
+      Alert.alert('Signup Successful');
+      navigation.replace('Login');
+    } else {
+      Alert.alert('Signup Failed', response.data.message);
+    }
+  } catch (error) {
+    Alert.alert('Error', error.response?.data?.message || error.message);
+  }
+};
+
 
 const Signup = () => {
   return (
@@ -118,7 +132,7 @@ const Signup = () => {
             {/* Signup Button */}
             <TouchableOpacity
               style={styles.buttonContainer}
-              onPress={handleSubmit}
+              onPress={() => handleSubmit()}
             >
               <Text style={styles.buttonText}>Signup</Text>
             </TouchableOpacity>

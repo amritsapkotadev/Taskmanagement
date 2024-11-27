@@ -2,6 +2,9 @@ import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios'; //api client
+import { Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 // Validation schema
 const validationSchema = Yup.object().shape({
@@ -14,6 +17,20 @@ const validationSchema = Yup.object().shape({
     .min(8, 'Password must be at least 9 characters')
     .label('Password'),
 });
+const handleLogin = async () => {
+  try {
+    const response = await axios.post('/login', { email, password });
+    if (response.data.token) {
+      Alert.alert('Login Successful');
+      useNavigation().navigate('Home'); // Navigate to Home screen
+    } else {
+      Alert.alert('Login Failed', response.data.message);
+    }
+  } catch (error) {
+    Alert.alert('Error', error.response?.data?.message || error.message);
+  }
+};
+
 
 const Login = () => {
   return (
