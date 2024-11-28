@@ -1,6 +1,6 @@
-const express = require('express');
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+import express from 'express';
+import jwt from 'jsonwebtoken';
+import User from '../models/user';
 require('dotenv').config();
 
 const router = express.Router();
